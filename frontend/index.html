@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobGuard - Fake Job Detector</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="brand-mark">JG</div>
+        <div>
+            <div class="brand-name">JobGuard</div>
+            <div class="brand-subtitle">Internship &amp; Job Safety Checker</div>
+        </div>
+        <span class="top-tag">Rule-based analysis</span>
+    </header>
+
+    <main class="page">
+
+        <section class="intro">
+            <p class="eyebrow">CHECK BEFORE YOU APPLY</p>
+            <h1>Is this job post trustworthy?</h1>
+            <p class="intro-copy">
+                Paste a job or internship advertisement to review potential warning signs.
+            </p>
+        </section>
+
+        <section class="input-card">
+            <label for="jobText">Job or internship post</label>
+
+            <textarea
+                id="jobText"
+                rows="8"
+                maxlength="20000"
+                placeholder="Paste the complete job post here, including company name, salary, contact details, fees and application links..."
+            ></textarea>
+
+            <div class="input-footer">
+                <span id="characterCount">0 / 20000 characters</span>
+
+                <button id="checkButton" class="primary-button">
+                    <span id="buttonText">Analyze job post</span>
+                    <span id="buttonSpinner" class="spinner hidden"></span>
+                </button>
+            </div>
+
+            <p class="privacy-note">
+                Avoid entering your real passwords, OTPs or private identity details.
+            </p>
+        </section>
+
+        <div id="message" class="message hidden" role="status"></div>
+
+        <section id="analysisSection" class="hidden">
+
+            <div id="resultBanner" class="result-banner">
+                <div id="resultSymbol" class="result-symbol">!</div>
+
+                <div class="result-copy">
+                    <div id="riskBadge" class="risk-badge">Risk level</div>
+                    <h2 id="riskSummary">Analysis summary</h2>
+                    <p id="resultMessage"></p>
+                </div>
+
+                <div class="banner-score">
+                    <strong id="riskScore">0/100</strong>
+                    <span>overall indicator</span>
+                </div>
+            </div>
+
+<!-- Machine learning prediction -->
+<article class="panel ml-panel">
+    <div class="panel-heading">
+        <div>
+            <h3>Machine Learning Prediction</h3>
+            <p>Prediction from the trained ML model</p>
+        </div>
+        <span class="panel-number">ML</span>
+    </div>
+
+    <div class="stat-row">
+        <span>Model prediction</span>
+        <strong id="mlPrediction">Not available</strong>
+    </div>
+
+    <div class="stat-row">
+        <span>Estimated fake probability</span>
+        <strong id="mlProbability">Not available</strong>
+    </div>
+
+    <p id="mlExplanation" class="small-note">
+        The model's prediction is an estimate, not proof of fraud.
+    </p>
+</article>
+
+
+            <!-- Two donut charts and summary statistics -->
+            <div class="dashboard-grid">
+
+                <article class="panel donut-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Overall risk score</h3>
+                            <p>Based on detected warning severity</p>
+                        </div>
+                        <span class="panel-number">01</span>
+                    </div>
+
+                    <div class="donut-wrap">
+                        <div id="overallDonut" class="donut overall-donut">
+                            <div class="donut-hole">
+                                <strong id="overallDonutScore">0</strong>
+                                <span>out of 100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chart-caption">
+                        <span class="legend-dot risk-dot"></span>
+                        <span>Risk indicator</span>
+                        <strong id="riskLegendScore">0 / 100</strong>
+                    </div>
+
+                    <div class="chart-caption muted-caption">
+                        <span class="legend-dot neutral-dot"></span>
+                        <span>Remaining score range</span>
+                        <strong id="remainingScore">100</strong>
+                    </div>
+                </article>
+
+                <article class="panel donut-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Warning signals</h3>
+                            <p>Count grouped by severity</p>
+                        </div>
+                        <span class="panel-number">02</span>
+                    </div>
+
+                    <div class="donut-wrap">
+                        <div id="severityDonut" class="donut severity-donut">
+                            <div class="donut-hole">
+                                <strong id="severityTotal">0</strong>
+                                <span>signals</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="severityLegend" class="severity-legend"></div>
+                </article>
+
+                <article class="panel stats-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Analysis summary</h3>
+                            <p>Signals returned by the checker</p>
+                        </div>
+                        <span class="panel-number">03</span>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Total warnings</span>
+                        <strong id="warningCount">0</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Serious warnings</span>
+                        <strong id="seriousCount">0</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Links found</span>
+                        <strong id="linkCount">0</strong>
+                    </div>
+
+                    <p class="small-note">
+                        This is a project-defined indicator, not a probability of fraud.
+                    </p>
+                </article>
+
+            </div>
+
+            <!-- Horizontal bar chart for every warning -->
+            <section class="panel warning-panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">SIGNAL-BY-SIGNAL REVIEW</p>
+                        <h2>Warning signals</h2>
+                        <p>
+                            Every detected warning gets a display score out of 10.
+                        </p>
+                    </div>
+
+                    <span id="warningHeadingCount" class="count-pill">0 signals</span>
+                </div>
+
+                <div id="warningBars" class="warning-bars"></div>
+
+                <div id="noWarnings" class="empty-state hidden">
+                    <strong>No warning signals were returned.</strong>
+                    <p>
+                        This does not prove the job is genuine. Verify the company
+                        and vacancy independently.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Detailed explanation for each warning -->
+            <section class="panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">FULL DETAILS</p>
+                        <h2>Detailed warning explanations</h2>
+                        <p>
+                            Open a warning to see what was noticed, why it matters,
+                            and what action you should take.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="allWarningsList" class="warning-details-list"></div>
+            </section>
+
+            <!-- Links found in the job post -->
+            <section class="panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">LINK REVIEW</p>
+                        <h2>Links found in the post</h2>
+                        <p>Links are shown for review and are not opened automatically.</p>
+                    </div>
+                </div>
+
+                <ul id="linksList" class="links-list">
+                    <li class="empty-link">No links found.</li>
+                </ul>
+            </section>
+
+            <!-- General safety advice -->
+            <section class="safety-tip">
+                <div class="tip-icon">✓</div>
+                <div>
+                    <h3>Before you apply</h3>
+                    <p>
+                        Never pay to secure a job, share an OTP or password, or
+                        transfer money for an employer. Confirm vacancies through
+                        the company's official website or verified contact details.
+                    </p>
+                </div>
+            </section>
+
+            <p id="disclaimer" class="disclaimer"></p>
+
+        </section>
+
+        <footer>
+            JobGuard · Educational project · Always verify independently
+        </footer>
+
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
