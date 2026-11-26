@@ -3,7 +3,7 @@ console.log("JobGuard script.js loaded");
 
 const $ = (id) => document.getElementById(id);
 
-const API_URL = "http://127.0.0.1:8000/api/check";
+const API_URL = "/api/check";
 
 const jobText = $("jobText");
 const checkButton = $("checkButton");
